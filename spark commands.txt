@@ -1,0 +1,65 @@
+1. java -version
+
+2. sudo apt-get update
+
+3. sudo apt-get install default-jdk -y
+
+4. scala -version
+
+5. sudo apt-get install scala -y
+
+6. cd ~/Downloads
+
+7. wget https://archive.apache.org/dist/spark/spark-3.5.7/spark-3.5.7-bin-hadoop3.tgz
+
+8. tar -xvf spark-3.5.7-bin-hadoop3.tgz
+
+9. sudo mv spark-3.5.7-bin-hadoop3 /usr/local/spark
+
+10. echo 'export SPARK_HOME=/usr/local/spark' >> ~/.bashrc
+
+11. echo 'export PATH=$PATH:$SPARK_HOME/bin' >> ~/.bashrc
+
+12. source ~/.bashrc
+
+13. spark-shell --version
+
+14. spark-shell
+
+15. :quit
+
+16. mkdir -p ~/SparkWordCount
+
+17. cd ~/SparkWordCount
+
+18. cat > input.txt <<'EOF'
+hello spark
+hello world
+spark word count
+hello world
+EOF
+
+19. cat input.txt
+
+20. cat > wordcount.scala <<'EOF'
+val input = sc.textFile("input.txt")
+val count = input
+  .flatMap(line => line.split("\\s+"))
+  .filter(word => word.nonEmpty)
+  .map(word => (word, 1))
+  .reduceByKey(_ + _)
+count.saveAsTextFile("output")
+println("Word Count completed successfully!")
+EOF
+
+21. cat wordcount.scala
+
+22. spark-shell -i wordcount.scala
+
+23. :quit
+
+24. cd ~/SparkWordCount/output
+
+25. ls
+
+26. cat part-00000
